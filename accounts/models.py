@@ -78,6 +78,26 @@ class User(AbstractBaseUser):
 
 
 
+class Students(models.Model):
+    uid = models.OneToOneField(User, models.DO_NOTHING, db_column='UID', blank=True, null=True)  # Field name made lowercase.
+    studentid = models.CharField(primary_key=True, max_length=9)
+    first_name = models.CharField(max_length=20, blank=True, null=True)
+    middle_name = models.CharField(max_length=20, blank=True, null=True)
+    last_name = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.CharField(max_length=1, blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
+    mobile = models.CharField(max_length=10, blank=True, null=True)
+    address = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=20, blank=True, null=True)
+    state = models.CharField(max_length=20, blank=True, null=True)
+
+class Faculty(models.Model):
+    facultyid = models.OneToOneField(User, models.DO_NOTHING, db_column='facultyid', primary_key=True)
+    facultyname = models.CharField(max_length=60)
+    gender = models.CharField(max_length=1, blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
+    mobile = models.CharField(max_length=10, blank=True, null=True)
+
 
 
 
