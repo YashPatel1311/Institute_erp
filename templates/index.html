@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width ,initial-scale=1.0">
+    <title>HOME</title>
+
+    <metahttp-equiv='cache-control' content='no-cache'>
+        <metahttp-equiv='expires' content='0'>
+            <metahttp-equiv='pragma' content='no-cache'>
+
+                <link rel="stylesheet" href="{% static 'style.css'%}">
+
+
+</head>
+
+<body>
+
+    <div class="form-wraper">
+
+        <form class="login-form" action='' method="POST">
+
+            {% csrf_token %}
+
+            <div class='head'>
+
+                <div>
+                    <span>Institute Login</span>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class='input'>
+                <img class="selectDisable" src="{% static 'icons8-user-32.png' %}">
+                <input type="text" name="email" placeholder="Email">
+            </div>
+
+            <div class='input'>
+                <img class="selectDisable" src="{% static 'icons8-lock-32.png' %}">
+                <input type="password" name="password" placeholder="Password">
+            </div>
+
+            <div class="err-msg"> {% for message in messages %} {{message}} {% endfor %}</div>
+
+            <div class='input-submit'>
+                <input type="submit" value="Login">
+            </div>
+
+        </form>
+
+    </div>
+
+
+</body>
+
+</html>

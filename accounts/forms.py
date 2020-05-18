@@ -7,6 +7,12 @@ class UserAdminCreationForm(forms.ModelForm):
     password1=forms.CharField(label='Password',widget=forms.PasswordInput)
     password2=forms.CharField(label='Password Conformation',widget=forms.PasswordInput)
 
+    CHOICES=[(0,'Faculty'),(1,'Student'),(None,'Unknown')]
+
+    # role= forms.ChoiceField(choices=CHOICES)
+    role = forms.ChoiceField(choices=CHOICES,widget=forms.Select)
+    # is_student = forms.ChoiceField(choices=CHOICES,widget=forms.RadioSelect)
+
     class Meta:
         model=User
         fields=('email',)
@@ -31,11 +37,20 @@ class UserAdminCreationForm(forms.ModelForm):
 
 class UserAdminChangeForm(forms.ModelForm):
 
+    CHOICES=[(0,'Faculty'),(1,'Student'),(None,'Unknown')]
+
     password=ReadOnlyPasswordHashField()
+    
+    role = forms.NullBooleanField(disabled=True,widget=forms.NullBooleanSelect)
 
     class Meta:
         model=User
-        fields=('email','password','active','student','staff','admin')
+
+        fields=('email','password')#'is_student','staff','admin')
+    
+
+        
 
     def clean_password(self):
         return self.initial["password"]
+

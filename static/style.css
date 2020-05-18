@@ -1,0 +1,126 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: black;
+    font-size: 20px;
+    height: 100vh;
+    width: 100vw;
+    /* align-content: center; */
+    position: relative;
+}
+
+.form-wraper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-form {
+    background-color: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+}
+
+.head {
+    height: 50px;
+}
+
+.head div {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.head div span {
+    position: relative;
+    top: 14px;
+    text-align: center;
+    color: white;
+}
+
+.head div span:hover {
+    color: #00FF5C;
+    cursor: default;
+}
+
+hr {
+    border: 0px;
+    height: 1px;
+    background-color: #373737;
+}
+
+.input {
+    position: relative;
+    display: flex;
+}
+
+.input input {
+    display: block;
+    height: 52px;
+    padding-left: 50px;
+    width: 312px;
+    margin: 20px 10px 10px 10px;
+    background-color: #1C1C1C;
+    color: white;
+    border: 0ch;
+    border-radius: 10px;
+    overflow-x: hidden;
+}
+
+.input input:focus {
+    outline-width: 0ch;
+}
+
+.input img {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+    height: 32px;
+    width: 32px;
+}
+
+.err-msg {
+    height: 20px;
+    margin-left: 10px;
+    color: white;
+    font-size: 17px;
+}
+
+.input-submit {
+    height: 52px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.input-submit input {
+    font-size: 17px;
+    width: 100px;
+    border: 0px;
+    border-radius: 10px;
+    background-color: #121212;
+    color: azure;
+}
+
+.input-submit input:hover {
+    background: #00FF5C;
+    color: white;
+}
+
+.input-submit input:focus {
+    outline-width: 0px;
+}
+
+.selectDisable {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}

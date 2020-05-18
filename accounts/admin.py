@@ -1,15 +1,21 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User,Students,Faculty
+from .models import User,Student,Faculty
 from .forms import UserAdminCreationForm,UserAdminChangeForm
 from django.contrib.auth.models import Group
 
 
-class StudentsInLine(admin.StackedInline):
-    model=Students
+class StudentInLine(admin.StackedInline):
+    
+    model=Student
+    verbose_name='Student'
+    verbose_name_plural='Student'
+
 
 class FacultyInLine(admin.StackedInline):
     model=Faculty
+    verbose_name='Faculty'
+    verbose_name_plural='Faculty'
 
 class UserAdmin(BaseUserAdmin):
 
@@ -22,32 +28,28 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets=(
             ('Credentials',{'fields':('email','password')}),
-            ('Permissions',{'fields':('active','student','staff','admin')}),  
+            ('Role',{'fields':('role',)}),
+            # ('Role',{'fields':('is_student',)}),
+            ('Permissions',{'fields':('active','staff','admin')}),  
               )
 
-    add_fieldsets = (
-            ('Credentials', {
-            'fields': ('email', 'password1','password2'),
-            
+    add_fieldsets=(
+        ('Credentials',{
+            'fields':('email', 'password1','password2',)
         }),
-            ("Permissions", {
-            'fields': (('active'),),
+        ('Role',{
+            'fields':('role',)
         }),
-            (None, {
-            'fields': (('student'),),
-            'classes': ('toggle',)
-        }),
-            (None, {
-            'fields': (('staff'),),
-        }),
+        ('Permissions',{
+            'fields':('active','staff','admin',)
+        })
+    )
 
-            (None, {
-            'fields': (('admin'),),
-        }),
-                    )
 
-    inlines=[StudentsInLine,FacultyInLine]
+    inlines=[StudentInLine,FacultyInLine]
 
+    class Media:
+        js=('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js','js/base.js')
     
     search_fields = ('email',)
     ordering = ('email',)

@@ -42,7 +42,7 @@ class User(AbstractBaseUser):
 
     email=models.EmailField(max_length=255,blank=True,null=False,unique=True)
     active=models.BooleanField(default=True)
-    student=models.BooleanField(default=True)
+    role=models.BooleanField(default=True,blank=True,null=True)
     staff=models.BooleanField(default=False)
     admin=models.BooleanField(default=False)
 
@@ -65,20 +65,21 @@ class User(AbstractBaseUser):
         return self.active
 
     @property
-    def is_student(self):
-        return self.student
-    
+    def is_admin(self):
+        return self.admin    
+
     @property
     def is_staff(self):
         return self.staff
 
-    @property
-    def is_admin(self):
-        return self.admin
+    def is_role(self):
+        return self.role
+
+    # def is_STUDENT(self):
+    #     return self.is_student
 
 
-
-class Students(models.Model):
+class Student(models.Model):
     uid = models.OneToOneField(User, models.DO_NOTHING, db_column='UID', blank=True, null=True)  # Field name made lowercase.
     studentid = models.CharField(primary_key=True, max_length=9)
     first_name = models.CharField(max_length=20, blank=True, null=True)
