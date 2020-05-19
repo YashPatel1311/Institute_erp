@@ -4,10 +4,10 @@
             student_grp = $('#student-group'),
             faculty_grp = $('#faculty-group'),
             redundant_stu = $('#student-0 h3'),
-            faculty_stu = $('#faculty-0 h3');
+            redundant_fac = $('#faculty-0 h3');
 
         redundant_stu.hide();
-        redundant_stu.hide();
+        redundant_fac.hide();
 
 
         function toggleRole(role) {
