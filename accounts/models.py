@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         user_obj=self.create_user(email=email,password=password)
         user_obj.admin=True
         user_obj.staff=True
-        user_obj.student=False
+        user_obj.role=False
         user_obj.save(using=self._db)
         return user_obj
 
@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 
         user_obj=self.create_user(email=email,password=password)
         user_obj.staff=True
-        user_obj.student=False
+        user_obj.role=False
         user_obj.save(using=self._db)
         return user_obj
 
