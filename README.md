@@ -10,9 +10,9 @@ An ERP software for Institutes and Colleges
 ```bash
 git clone https://github.com/YashPatel1311/Institute_erp.git
 ```
-3. Install ```mysqlclient```
+3. Install ```requirements.txt``` 🎉
 ```bash
-pip install mysqlclient
+pip install -r requirements.txt
 ```
 
 ## Usage 📚
