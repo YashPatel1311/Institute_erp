@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    'accounts','student'
 ]
 
 AUTH_USER_MODEL='accounts.User'
@@ -132,4 +132,5 @@ STATIC_ROOT=os.path.join(BASE_DIR,'assets')
 
 
 
-AUTHENTICATE_BACKENDS=('accounts.backends.EmailBackends')
+AUTHENTICATE_BACKENDS=[ 'django.contrib.auth.backends.ModelBackend','accounts.backends.EmailBackends'
+]

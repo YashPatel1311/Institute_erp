@@ -77,9 +77,12 @@ class User(AbstractBaseUser):
     # def is_STUDENT(self):
     #     return self.is_student
 
+    class Meta:
+        db_table="user"
+
 
 class Student(models.Model):
-    uid = models.OneToOneField(User, models.DO_NOTHING, db_column='UID', blank=True, null=True)  # Field name made lowercase.
+    uid = models.OneToOneField(User, on_delete=models.CASCADE, db_column='UID', blank=True, null=True)  # Field name made lowercase.
     studentid = models.CharField(primary_key=True, max_length=9)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     middle_name = models.CharField(max_length=20, blank=True, null=True)
@@ -91,14 +94,163 @@ class Student(models.Model):
     city = models.CharField(max_length=20, blank=True, null=True)
     state = models.CharField(max_length=20, blank=True, null=True)
 
+    class Meta:
+        db_table="student"
+
 class Faculty(models.Model):
-    facultyid = models.OneToOneField(User, models.DO_NOTHING, db_column='facultyid', primary_key=True)
+    facultyid = models.OneToOneField(User, on_delete=models.CASCADE, db_column='facultyid', primary_key=True)
     facultyname = models.CharField(max_length=60)
     gender = models.CharField(max_length=1, blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     mobile = models.CharField(max_length=10, blank=True, null=True)
 
+    class Meta:
+        db_table="faculty"
+
+class Branch(models.Model):
+    branchid = models.CharField(primary_key=True, max_length=2)
+    bname = models.CharField(max_length=35)
+    capacity = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'branch'
+
+
+class Course(models.Model):
+    courseid = models.CharField(primary_key=True, max_length=6)
+    cname = models.CharField(max_length=100)
+    credit = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'course'
+
+
+class Class(models.Model):
+    classid_ai = models.AutoField(primary_key=True)
+    classid = models.CharField(unique=True, max_length=7, blank=True, null=True)
+    branch = models.ForeignKey(Branch, models.DO_NOTHING, db_column='branch')
+    batch = models.TextField()  # This field type is a guess.
+    section = models.CharField(max_length=1, blank=True, null=True)
+    labgroup = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'class'
+
+
+class ClassCourse(models.Model):
+    classcourseid = models.AutoField(primary_key=True)
+    classid = models.ForeignKey(Class, models.DO_NOTHING, db_column='classid', blank=True, null=True)
+    facultyid = models.ForeignKey(Faculty, models.DO_NOTHING, db_column='facultyid', blank=True, null=True)
+    courseid = models.ForeignKey('Course', models.DO_NOTHING, db_column='courseid', blank=True, null=True)
+    ac_year = models.TextField(blank=True, null=True)  # This field type is a guess.
+    sem = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'class_course'
+        unique_together = (('classid', 'courseid', 'ac_year', 'sem'),)
+
+class Lecture(models.Model):
+    lectureid = models.AutoField(primary_key=True)
+    facultyid = models.ForeignKey(Faculty, models.DO_NOTHING, db_column='facultyid')
+    classcourseid = models.ForeignKey(ClassCourse, models.DO_NOTHING, db_column='classcourseid', blank=True, null=True)
+    timedate = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'lecture'
+        unique_together = (('facultyid', 'classcourseid', 'timedate'),)
+
+
+class Enrollment(models.Model):
+    enrollid = models.AutoField(primary_key=True)
+    courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='courseid', blank=True, null=True)
+    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentid', blank=True, null=True)
+    ac_year = models.TextField(blank=True, null=True)  # This field type is a guess.
+    sem = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'enrollment'
+        unique_together = (('courseid', 'studentid'),)
+
+
+class Exam(models.Model):
+    examid = models.AutoField(primary_key=True)
+    classcourseid = models.ForeignKey(ClassCourse, models.DO_NOTHING, db_column='classcourseid', blank=True, null=True)
+    examtype = models.CharField(max_length=6)
+    edate = models.DateField(blank=True, null=True)
+    total = models.PositiveIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'exam'
+        unique_together = (('classcourseid', 'examtype', 'edate'),)
+
+
+class Marks(models.Model):
+    examid = models.OneToOneField(Exam, models.DO_NOTHING, db_column='examid', primary_key=True)
+    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentid')
+    obtained = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'marks'
+        unique_together = (('examid', 'studentid'),)
+
+class BranchCourse(models.Model):
+    branchid = models.OneToOneField(Branch, models.DO_NOTHING, db_column='branchid', primary_key=True)
+    courseid = models.ForeignKey('Course', models.DO_NOTHING, db_column='courseid')
+
+    class Meta:
+        managed = False
+        db_table = 'branch_course'
+        unique_together = (('branchid', 'courseid'),)
 
 
 
+class Attendance(models.Model):
+    attendanceid = models.AutoField(primary_key=True)
+    lectureid = models.ForeignKey('Lecture', models.DO_NOTHING, db_column='lectureid', blank=True, null=True)
+    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentid', blank=True, null=True)
+    attended = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'attendance'
+
+
+class Timetable(models.Model):
+    weekday = models.PositiveIntegerField(blank=True, null=True)
+    facultyid = models.ForeignKey(Faculty, models.DO_NOTHING, db_column='facultyid', blank=True, null=True)
+    classcourseid = models.ForeignKey(ClassCourse, models.DO_NOTHING, db_column='classcourseid', blank=True, null=True)
+    starttime = models.TimeField(blank=True, null=True)
+    endtime = models.TimeField(blank=True, null=True)
+    room = models.CharField(max_length=4, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'timetable'
+
+
+class StudentClass(models.Model):
+    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentid', blank=True, null=True)
+    section = models.ForeignKey(Class, models.DO_NOTHING, db_column='section', blank=True, null=True,related_name='class_section_identifier')
+    labgroup = models.ForeignKey(Class, models.DO_NOTHING, db_column='labgroup', blank=True, null=True,related_name='class_labgroup_identifier')
+
+    class Meta:
+        managed = False
+        db_table = 'student_class'
+
+
+class StudentClasscourse(models.Model):
+    studentid = models.OneToOneField(Student, models.DO_NOTHING, db_column='studentid', primary_key=True)
+    classcourseid = models.ForeignKey(ClassCourse, models.DO_NOTHING, db_column='classcourseid')
+
+    class Meta:
+        managed = False
+        db_table = 'student_classcourse'
+        unique_together = (('studentid', 'classcourseid'),)

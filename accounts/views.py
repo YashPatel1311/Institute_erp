@@ -17,7 +17,7 @@ def index(request):
 
         
         user=auth.authenticate(username=email,password=password)
-
+        login(request,user)
 
         if user==None:
             
@@ -25,8 +25,22 @@ def index(request):
             return redirect('/')
 
         else:
-            if user.student:
-                return HttpResponse("The user is student")
+            if user.role:
+                if request.user.is_authenticated:
+                    return redirect("student/home/")    
+                        
+                
 
-            else: 
-                return HttpResponse("The user is Faculty")
+            elif user.role== False: 
+                if request.user.is_authenticated:
+                    return HttpResponse("The user is Faculty")
+
+            else:
+                return HttpResponse("<h1>Access Denied</h1>")
+
+
+def logout_request(request):
+
+    auth.logout(request)
+
+    return redirect("/")
