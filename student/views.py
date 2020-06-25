@@ -24,8 +24,11 @@ def student_attendance(request):
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
             
+            current_user= request.user
+            current_student=Student.objects.get(uid=current_user.id)
+
             cursor=connection.cursor()   
-            cursor.execute("call view_students_attendance('%s',%s,%s);",[201851084,year,sem])
+            cursor.execute("call view_students_attendance(%s,%s,%s);",[current_student.studentid,year,sem])
             result=cursor.fetchall()
 
             args={'form':form,'year':year,'sem':sem,'result':result}
@@ -46,8 +49,11 @@ def student_marks(request):
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
             
+            current_user= request.user
+            current_student=Student.objects.get(uid=current_user.id)
+
             cursor=connection.cursor()   
-            cursor.execute("call view_students_marks('%s',%s,%s);",[201851084,year,sem])
+            cursor.execute("call view_students_marks(%s,%s,%s);",[current_student.studentid,year,sem])
             result=cursor.fetchall()
 
             args={'form':form,'year':year,'sem':sem,'result':result}
@@ -67,8 +73,11 @@ def student_course(request):
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
             
+            current_user= request.user
+            current_student=Student.objects.get(uid=current_user.id)
+
             cursor=connection.cursor()   
-            cursor.execute("call view_students_attendance('%s',%s,%s);",[201851084,year,sem])
+            cursor.execute("call view_student_courses(%s,%s,%s);",[current_student.studentid,year,sem])
             result=cursor.fetchall()
 
             args={'form':form,'year':year,'sem':sem,'result':result}
@@ -89,7 +98,7 @@ def student_timetable(request):
             sem=form.cleaned_data['semester']
             
             cursor=connection.cursor()   
-            cursor.execute("call view_students_attendance('%s',%s,%s);",[201851084,year,sem])
+            cursor.execute("call view_timitable_student(%s,%s,%s);",[201851084,year,sem])
             result=cursor.fetchall()
 
             args={'form':form,'year':year,'sem':sem,'result':result}
