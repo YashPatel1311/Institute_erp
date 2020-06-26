@@ -1,21 +1,35 @@
 # Institute Management System 🎓
 
-An ERP software for Institutes and Colleges
+An ERP software for Institutes and Colleges.
 
 <img src="images/Institute.png">
 
 
 ## Installation ⚙️
 
-1. Setup your [Django](https://docs.djangoproject.com/en/3.0/topics/install/)
+1.Import Database file from My SQL workbench 
+
+<img src="images/database.png">
+
+2.select ``` Data Import ``` & select ``` Import form self contained  file ```
+<img src="images/database2.png">
+
+3.click on ``` Start import ```
+
+4.Create New User
+<img src="images/database3.png">
+
+5.
+
+4. Setup your [Django](https://docs.djangoproject.com/en/3.0/topics/install/)
 ```bash
 pip install django
 ```
-2. Clone this repository 💥
+5. Clone this repository 💥
 ```bash
 git clone https://github.com/YashPatel1311/Institute_erp.git
 ```
-3. Install ```requirements.txt``` 🎉
+6. Install ```requirements.txt``` 🎉
 ```bash
 pip install -r requirements.txt
 ```
