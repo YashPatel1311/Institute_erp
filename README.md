@@ -8,6 +8,9 @@ An ERP software for Institutes and Colleges
 ## Installation ⚙️
 
 1. Setup your [Django](https://docs.djangoproject.com/en/3.0/topics/install/)
+```bash
+pip install django
+```
 2. Clone this repository 💥
 ```bash
 git clone https://github.com/YashPatel1311/Institute_erp.git
