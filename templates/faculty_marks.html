@@ -1,182 +1,114 @@
-{% load static %}
+{% extends 'basef.html' %}
 
-<!DOCTYPE html>
+<!-- NAME -->
+{% block name %} Marks {% endblock %}
 
-<html>
+<!-- CONTANT -->
 
-<head>
-    <meta charset="utf-8">
-    <title>IIIT</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block contant%}
+<div class="content">
 
-    <metahttp-equiv='cache-control' content='no-cache'>
-        <metahttp-equiv='expires' content='0'>
-            <metahttp-equiv='pragma' content='no-cache'>
+    <form method="POST">
 
-                <link rel="stylesheet" type="text/css" href="{% static 'student_style.css'%}">
+        {{ form.as_p }} {% csrf_token %}
+        <button type="submit" class="btn btn-success">Submit</button>
 
-</head>
+    </form>
+    <hr>
+    <table id="result" class="table table-dark">
 
-<body class="container">
+        <tr class="bg-primary">
+            <th scope="col" style="display:none">Marks ID</th>
+            <th scope="col" style="display:none">Exam ID</th>
+            <th scope="col">Exam Type</th>
+            <th scope="col">Obtained Marks</th>
+            <th scope="col">Total Marks</th>
+        </tr>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+        {% for display in result %}
+        <tr scope="row">
+            <td style="display:none">{{display.0 }}</td>
+            <td style="display:none">{{display.1 }}</td>
+            <td>{{display.2}}</td>
+            <td><input type="number" name="obtained" min="0" max="{{display.4}}" value="{{display.3}}"></td>
+            <td>{{display.4}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    <hr>
+    <button type="submit" onclick="sendJSON();" class="btn btn-success">Save</button>
 
 
-    <script>
-        const csrftoken = Cookies.get('csrftoken');
-        var arr = [];
-        $(function() {
-            getString();
+
+</div>
+{% endblock %}
+
+<!-- SCRIPT -->
+
+{% block script %}
+<script>
+    const csrftoken = Cookies.get('csrftoken');
+    var arr = [];
+    $(function() {
+        getString();
+    });
+
+    function getString() {
+        var total_rows = document.getElementById("result").rows.length;
+
+        for (var i = 1; i < total_rows; i++) {
+            temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
+            arr.push(temp);
+        }
+        console.log(arr);
+    }
+
+
+    function csrfSafeMethod(method) {
+        return ['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method);
+    }
+
+    function sendJSON() {
+        updates = {}
+        var total_rows = document.getElementById("result").rows.length;
+
+        for (var i = 1; i < total_rows; i++) {
+            temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
+            if (temp != arr[i - 1]) {
+                temp2 = document.getElementById("result").rows[i].cells[0].innerHTML;
+                updates[temp2] = temp;
+            }
+        }
+        console.log(updates);
+
+
+        console.log("Button Clicked");
+
+
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
         });
 
-        function getString() {
-            var total_rows = document.getElementById("result").rows.length;
-
-            for (var i = 1; i < total_rows; i++) {
-                temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
-                arr.push(temp);
+        $.ajax({
+            url: "/faculty/marks_update/",
+            type: "POST",
+            data: {
+                'updates': JSON.stringify(updates)
+            },
+            success: function(response) {
+                console.log("Sent successfully!!")
             }
-            console.log(arr);
-        }
+
+        });
 
 
-        function csrfSafeMethod(method) {
-            return ['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method);
-        }
-
-        function sendJSON() {
-            updates = {}
-            var total_rows = document.getElementById("result").rows.length;
-
-            for (var i = 1; i < total_rows; i++) {
-                temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
-                if (temp != arr[i - 1]) {
-                    temp2 = document.getElementById("result").rows[i].cells[0].innerHTML;
-                    updates[temp2] = temp;
-                }
-            }
-            console.log(updates);
-
-
-            console.log("Button Clicked");
-
-
-
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-
-            $.ajax({
-                url: "/faculty/marks_update/",
-                type: "POST",
-                data: {
-                    'updates': JSON.stringify(updates)
-                },
-                success: function(response) {
-                    console.log("Sent successfully!!")
-                }
-
-            });
-
-
-        }
-
-
-
-        function home() {
-            new_url = location.protocol + "//" + location.host + "/faculty/home";
-            window.location.href = new_url;
-        }
-
-        function timetable() {
-            new_url = location.protocol + "//" + location.host + "/faculty/timetable";
-            window.location.href = new_url;
-        }
-
-        function attendance() {
-            new_url = location.protocol + "//" + location.host + "/faculty/all_attendance";
-            window.location.href = new_url;
-        }
-
-        function course() {
-            new_url = location.protocol + "//" + location.host + "/faculty/course";
-            window.location.href = new_url;
-        }
-
-        function logout() {
-            new_url = location.protocol + "//" + location.host + "/logout";
-            window.location.href = new_url;
-        }
-    </script>
-
-    <header class="main-header">
-        <a href="/" class="institute-logo">
-            <img src="{% static 'IIIT_Logo.jpg'%}" class="IIIT-img">
-            <div class="institute-name">IIIT</div>
-        </a>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="Yash">Yash</a></li>
-                <li><a href="javascript:;" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="main-pg">
-        <div class="nav-div">
-            <nav class="navigation">
-                <ul>
-                    <li><a href="javascript:;" onclick="home()">Home</a></li>
-                    <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
-                    <li><a href="">Marks</a></li>
-                    <li><a href="javascript:;" onclick="timetable()">Time Table</a></li>
-                    <li><a href="javascript:;" onclick='course()'>Courses</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="content">
-
-            <form method="POST">
-
-                {{ form.as_p }} {% csrf_token %}
-                <button type="submit">Submit</button>
-
-            </form>
-
-            <table id="result" border="1">
-
-                <tr>
-                    <th style="display:none">Marks ID</th>
-                    <th style="display:none">Exam ID</th>
-                    <th>Exam Type</th>
-                    <th>Obtained Marks</th>
-                    <th>Total Marks</th>
-                </tr>
-
-
-                {% for display in result %}
-                <tr>
-                    <td style="display:none">{{display.0 }}</td>
-                    <td style="display:none">{{display.1 }}</td>
-                    <td>{{display.2}}</td>
-                    <td><input type="number" name="obtained" min="0" max="{{display.4}}" value="{{display.3}}"></td>
-                    <td>{{display.4}}</td>
-                </tr>
-                {% endfor %}
-
-            </table>
-
-            <button type="submit" onclick="sendJSON();">Save</button>
-
-
-
-        </div>
-    </div>
-</body>
-
-</html>
+    }
+</script>
+{% endblock %}
