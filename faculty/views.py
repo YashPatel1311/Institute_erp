@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from accounts.models import Faculty,ClassCourse,Attendance,Marks
-from .forms import Classcourseform,FacultyAttendanceform
+from .forms import Classcourseform
 from django.http import HttpResponseRedirect
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
@@ -44,7 +44,7 @@ def faculty_attendance(request):
     current_faculty=Faculty.objects.get(facultyid=current_user.id)
 
     if request.method == 'POST':
-        form = FacultyAttendanceform(request.POST)
+        form = Classcourseform(request.POST)
         if form.is_valid():
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
@@ -62,7 +62,7 @@ def faculty_attendance(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = FacultyAttendanceform()
+        form = Classcourseform()
         return render(request, 'faculty_attendance.html', {'form': form})
 
 # @csrf_exempt
@@ -91,8 +91,10 @@ def faculty_marks(request,studentid):
     current_user=request.user
     current_faculty=Faculty.objects.get(facultyid=current_user.id)
 
+    print(studentid)
+
     if request.method == 'POST':
-        form = FacultyAttendanceform(request.POST)
+        form = Classcourseform(request.POST)
         if form.is_valid():
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
@@ -104,13 +106,13 @@ def faculty_marks(request,studentid):
             cursor.execute("call view_students_marks_by_faculty(%s,%s,%s,%s);",[studentid,courseid,year,sem])
             result=cursor.fetchall()
 
-            args={'form':form,'studentid':studentid,'current_faculty':current_faculty}
+            args={'form':form,'studentid':studentid,'current_faculty':current_faculty,'result':result}
 
             return render(request,'faculty_marks.html',args)
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = FacultyAttendanceform()
+        form = Classcourseform()
         return render(request, 'faculty_marks.html', {'form': form,'current_faculty':current_faculty})
 
 
