@@ -105,6 +105,7 @@ CREATE TABLE exam (
 );
                         
 CREATE TABLE marks (
+	marksid INT UNSIGNED AUTO_INCREMENT Primary Key,
     examid INT UNSIGNED,
     studentid VARCHAR(9) NOT NULL,
     obtained INT NOT NULL,
@@ -112,7 +113,7 @@ CREATE TABLE marks (
         REFERENCES student (studentid),
     FOREIGN KEY (examid)
         REFERENCES exam (examid),
-    PRIMARY KEY (examid , studentid)
+    UNIQUE KEY (examid , studentid)
 );
                   
 CREATE TABLE branch_course (
@@ -348,7 +349,7 @@ READS SQL DATA
 BEGIN
 
 SET @count:=0;
-select (@count:=@count+1) as '#',date(timedate) as 'date',dayname(timedate) as 'day',attended from attendance natural join(
+select attendanceid,(@count:=@count+1) as '#',date(timedate) as 'date',dayname(timedate) as 'day',attended from attendance natural join(
 select lectureid,studentid,timedate from lecture natural join
 (select classcourseid,studentid from
 (select * from student_classcourse where studentid=sid) as t1
@@ -357,6 +358,30 @@ natural join
     
 END|
 delimiter ;
+
+
+
+
+DROP PROCEDURE if exists `project`.`view_students_marks_by_faculty`;
+delimiter |
+create procedure view_students_marks_by_faculty(IN sid char(9),IN c_id char(6),IN academic_year year,IN semester tinyint)
+READS SQL DATA
+BEGIN
+
+select marksid,examid,examtype,obtained,total from marks natural join
+(select courseid,examid,studentid,total,examtype from exam natural join
+(select classcourseid,courseid,studentid from
+(select * from class_course where ac_year=academic_year and sem=semester and courseid=c_id) as t1
+natural join
+(select * from student_classcourse where studentid =sid) as t2) as t3)as t4
+order by courseid;
+    
+END|
+delimiter ;
+
+call view_students_marks_by_faculty('201851084','CS401',2019,2);
+
+
 
 
 
@@ -420,7 +445,3 @@ natural join course;
 
 end |
 delimiter ;
-
-
-
-
