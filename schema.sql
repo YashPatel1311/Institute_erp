@@ -445,7 +445,3 @@ natural join course;
 
 end |
 delimiter ;
-
-
-
-
