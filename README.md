@@ -30,15 +30,11 @@ An ERP software for Institutes and Colleges.
 
 <img src="images/database5.png">
 
-4. Setup your [Django](https://docs.djangoproject.com/en/3.0/topics/install/)
-```bash
-pip install django
-```
-5. Clone this repository 💥
+7. Clone this repository 💥
 ```bash
 git clone https://github.com/YashPatel1311/Institute_erp.git
 ```
-6. Install ```requirements.txt``` 🎉
+8. Install ```requirements.txt``` 🎉
 ```bash
 pip install -r requirements.txt
 ```
@@ -49,13 +45,21 @@ pip install -r requirements.txt
 ```bash
 cd Institute_erp
 ```
+2. Run this command 
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-2. Strat your server 🚀
+. Strat your server 🚀
 ```bash
 python manage.py runserver
 ```
 
-3. Now open your browser & go on ``` 127.0.0.1:8000```
+3. Now open your browser & open this URL 
+```bash
+127.0.0.1:8000
+```
 
 
 ## Contributers 👨‍💻
