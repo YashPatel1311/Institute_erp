@@ -62,9 +62,6 @@ def student_marks(request):
             year = form.cleaned_data["ac_year"]
             sem = form.cleaned_data["semester"]
 
-            current_user = request.user
-            current_student = Student.objects.get(uid=current_user.id)
-
             cursor = connection.cursor()
             cursor.execute(
                 "call view_students_marks(%s,%s,%s);",
@@ -96,9 +93,6 @@ def student_course(request):
         if form.is_valid():
             year = form.cleaned_data["ac_year"]
             sem = form.cleaned_data["semester"]
-
-            current_user = request.user
-            current_student = Student.objects.get(uid=current_user.id)
 
             cursor = connection.cursor()
             cursor.execute(
