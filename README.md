@@ -11,12 +11,17 @@ An ERP software for Institutes and Colleges.
 
 <img src="images/database.png">
 
+
 2.select ``` Data Import ``` & select ``` Import form self contained  file ```
+
+
 <img src="images/database2.png">
+
 
 3.click on ``` Start import ```
 
 4.Create New User
+
 <img src="images/database3.png">
 
 5.
