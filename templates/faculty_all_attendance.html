@@ -24,60 +24,6 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
     <script>
-        /*
-                                                        var updates = {}
-                                                            //var CSRF = $("input[name=csrfmiddlewaretoken]").val();
-
-                                                        const csrftoken = Cookies.get('csrftoken');
-
-                                                        function dirtybit(attendanceid, no) {
-
-                                                            var attended = document.getElementById("result").rows[no].cells[4]
-
-                                                            if (attended.innerHTML == "present") {
-                                                                attended.innerHTML = "absent"
-                                                                updates[attendanceid] = 0
-                                                            } else {
-                                                                attended.innerHTML = "present"
-                                                                updates[attendanceid] = 1
-                                                            }
-
-                                                            console.log(updates)
-                                                        }
-
-
-                                                        function csrfSafeMethod(method) {
-                                                            return ['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method);
-                                                        }
-
-                                                        function sendJSON() {
-
-                                                            console.log("Button Clicked");
-
-                                                            $.ajaxSetup({
-                                                                beforeSend: function(xhr, settings) {
-                                                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                                                                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                                                                    }
-                                                                }
-                                                            });
-
-                                                            $.ajax({
-                                                                url: "/faculty/attendance_update/",
-                                                                type: "POST",
-                                                                data: {
-                                                                    'updates': JSON.stringify(updates)
-                                                                },
-                                                                success: function(response) {
-                                                                    console.log("Seend successfully")
-                                                                }
-
-                                                            });
-
-                                                        }
-
-                                                        */
-
         function singleStudent(studentid) {
             new_url = location.protocol + "//" + location.host + "/faculty/attendance/" + studentid;
             window.location.href = new_url;

@@ -207,3 +207,34 @@ def faculty_all_marks_update(request):
 
     
     return HttpResponse("Successfully Updated!")
+
+
+def faculty_timetable(request):
+
+    current_user = request.user
+    current_faculty = Faculty.objects.get(facultyid=current_user.id)
+
+    if request.method == "POST":
+        form = Classcourseform(request.POST)
+        if form.is_valid():
+            year = form.cleaned_data["ac_year"]
+            sem = form.cleaned_data["semester"]
+
+            cursor = connection.cursor()
+            cursor.execute(
+                "call view_timetable_faculty(%s,%s,%s);", [current_user.id, year, sem]
+            )
+            result = cursor.fetchall()
+
+            args = {"form": form, "result": result, "current_faculty": current_faculty}
+
+            return render(request, "faculty_timetable.html", args)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Classcourseform()
+        return render(
+            request,
+            "faculty_timetable.html",
+            {"form": form, "current_faculty": current_faculty},
+        )

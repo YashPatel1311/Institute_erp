@@ -11,6 +11,6 @@ urlpatterns=[
     path("all_marks_update/",views.faculty_all_marks_update),
     path("course/",views.faculty_course),
     path("all_attendance/",views.faculty_all_attendance),
-    # path("timetable/",views.student_timetable),
+    path("timetable/",views.faculty_timetable),
     
 ]

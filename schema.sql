@@ -465,6 +465,23 @@ delimiter ;
 
 call view_timitable_student('201851084',2019,2);
 
+
+drop procedure if exists `project`.`view_timetable_faculty`;
+delimiter |
+create procedure view_timetable_faculty(IN f_id char(9),IN academic_year year,IN semester tinyint)
+reads sql data
+begin
+
+select weekday,courseid,starttime,endtime,room from timetable natural join
+(select classcourseid,courseid from class_course where ac_year=academic_year and sem=semester and facultyid=f_id) as t1
+order by weekday;
+
+end |
+delimiter ;
+
+call view_timetable_faculty(2,2019,2);
+
+
 drop procedure if exists `project`.`view_student_courses`;
 delimiter |
 create procedure view_student_courses(IN sid char(9),IN academic_year year,IN semester tinyint)
