@@ -33,7 +33,7 @@ def index(request):
 
             elif user.role== False: 
                 if request.user.is_authenticated:
-                    return HttpResponse("The user is Faculty")
+                    return redirect("faculty/home/")    
 
             else:
                 return HttpResponse("<h1>Access Denied</h1>")

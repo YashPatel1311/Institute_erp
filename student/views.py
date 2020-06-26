@@ -2,7 +2,6 @@ from django.shortcuts import render,HttpResponse,redirect
 from django.db import connection
 from accounts.models import Student
 from .forms import SemesterForm
-from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 
 

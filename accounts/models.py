@@ -192,8 +192,9 @@ class Exam(models.Model):
 
 
 class Marks(models.Model):
-    examid = models.OneToOneField(Exam, models.DO_NOTHING, db_column='examid', primary_key=True)
-    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentid')
+    marksid = models.AutoField(primary_key=True)
+    examid = models.ForeignKey(Exam, models.DO_NOTHING, db_column='examid', blank=True, null=True)
+    studentid = models.ForeignKey('Student', models.DO_NOTHING, db_column='studentid')
     obtained = models.IntegerField()
 
     class Meta:

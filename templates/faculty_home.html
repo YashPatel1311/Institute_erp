@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>IIIT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <metahttp-equiv='cache-control' content='no-cache'>
+        <metahttp-equiv='expires' content='0'>
+            <metahttp-equiv='pragma' content='no-cache'>
+
+                <link rel="stylesheet" type="text/css" href="{% static 'student_style.css'%}">
+
+</head>
+
+
+<script>
+    function attendance() {
+        new_url = location.protocol + "//" + location.host + "/faculty/attendance";
+        window.location.href = new_url;
+    }
+
+    function marks() {
+        new_url = location.protocol + "//" + location.host + "/faculty/marks";
+        window.location.href = new_url;
+    }
+
+    function timetable() {
+        new_url = location.protocol + "//" + location.host + "/faculty/timetable";
+        window.location.href = new_url;
+    }
+
+    function course() {
+        new_url = location.protocol + "//" + location.host + "/faculty/course";
+        window.location.href = new_url;
+    }
+
+    function logout() {
+        new_url = location.protocol + "//" + location.host + "/logout";
+        window.location.href = new_url;
+    }
+</script>
+
+<body class="container">
+    <header class="main-header">
+        <a href="/" class="institute-logo">
+            <img src="{% static 'IIIT_Logo.jpg'%}" class="IIIT-img">
+            <div class="institute-name">IIIT</div>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Yash">Yash</a></li>
+                <li><a href="javascript:;" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="main-pg">
+        <div class="nav-div">
+            <nav class="navigation">
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
+                    <li><a href="javascript:;" onclick='marks()'>Marks</a></li>
+                    <li><a href="javascript:;" onclick='timetable()'>Time Table</a></li>
+                    <li><a href="javascript:;" onclick='course()'>Courses</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="content" align='center'>
+
+            <h1>Welcome</h1>
+
+            <h3>{{current_faculty.facultyname}}</h3>
+
+        </div>
+    </div>
+</body>
+
+</html>
