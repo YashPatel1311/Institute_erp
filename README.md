@@ -2,6 +2,8 @@
 
 An ERP software for Institutes and Colleges
 
+<img src="images/Institute.png">
+
 
 ## Installation ⚙️
 
