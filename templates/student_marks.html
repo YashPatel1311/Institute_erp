@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+<!-- NAME -->
+{% block name %} Marks {% endblock %}
 
 <!-- CONTANT -->
 {% block contant%}
@@ -7,22 +9,22 @@
     <form method="POST">
 
         {{ form.as_p }} {% csrf_token %}
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn btn-success">Submit</button>
 
     </form>
+    <hr>
+    <table class="table table-dark">
 
-    <table border="1">
-
-        <tr>
-            <th>Course id</th>
-            <th>Exam Type</th>
-            <th>Obtained Marks</th>
-            <th>Total Marks</th>
+        <tr class="bg-primary">
+            <th scope="col">Course id</th>
+            <th scope="col">Exam Type</th>
+            <th scope="col">Obtained Marks</th>
+            <th scope="col">Total Marks</th>
         </tr>
 
 
         {% for display in result %}
-        <tr>
+        <tr scope="row">
             <td>{{display.0}}</td>
             <td>{{display.1}}</td>
             <td>{{display.2}}</td>
