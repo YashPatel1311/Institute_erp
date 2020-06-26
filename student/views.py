@@ -101,10 +101,7 @@ def student_course(request):
             current_student = Student.objects.get(uid=current_user.id)
 
             cursor = connection.cursor()
-            cursor.execute(
-                "call view_student_courses(%s,%s,%s);",
-                [current_student.studentid, year, sem],
-            )
+            cursor.execute("call view_student_courses(%s,%s,%s);",[current_student.studentid, year, sem])
             result = cursor.fetchall()
 
             args = {"form": form, "result": result, "current_student": current_student}
@@ -134,7 +131,7 @@ def student_timetable(request):
 
             cursor = connection.cursor()
             cursor.execute(
-                "call view_timitable_student(%s,%s,%s);", [201851084, year, sem]
+                "call view_timitable_student(%s,%s,%s);", [current_student.studentid, year, sem]
             )
             result = cursor.fetchall()
 
