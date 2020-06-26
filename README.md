@@ -7,7 +7,7 @@ An ERP software for Institutes and Colleges.
 
 ## Installation ⚙️
 
-1.Import Database file from My SQL workbench & select ``` Data Import ``` 
+1.Import ```DB_Export.sql``` from My SQL workbench & select ``` Data Import ``` 
 
 <img src="images/database.png">
 
