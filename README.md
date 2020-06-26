@@ -7,24 +7,28 @@ An ERP software for Institutes and Colleges.
 
 ## Installation ⚙️
 
-1.Import Database file from My SQL workbench 
+1.Import Database file from My SQL workbench & select ``` Data Import ``` 
 
 <img src="images/database.png">
 
 
-2.select ``` Data Import ``` & select ``` Import form self contained  file ```
+2. select ``` Import form self contained  file ``` & click on ``` Start import ```
 
 
 <img src="images/database2.png">
 
 
-3.click on ``` Start import ```
-
-4.Create New User
+3.Create New User
 
 <img src="images/database3.png">
 
-5.
+5. Use **Usrename** :  ```dba``` & **Password** : ```dba@django```
+
+<img src="images/database4.png">
+
+6. Give **DBA**(All the permissions) to the user
+
+<img src="images/database5.png">
 
 4. Setup your [Django](https://docs.djangoproject.com/en/3.0/topics/install/)
 ```bash
