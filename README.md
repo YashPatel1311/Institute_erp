@@ -51,12 +51,12 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-. Strat your server 🚀
+3. Strat your server 🚀
 ```bash
 python manage.py runserver
 ```
 
-3. Now open your browser & open this URL 
+4. Now open your browser & open this URL 
 ```bash
 127.0.0.1:8000
 ```
