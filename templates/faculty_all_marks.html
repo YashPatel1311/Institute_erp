@@ -88,7 +88,7 @@
         }
 
         function singleStudent(studentid) {
-            new_url = location.protocol + "//" + location.host + "/faculty/marks/" + studentid + ">";
+            new_url = location.protocol + "//" + location.host + "/faculty/marks/" + studentid;
             window.location.href = new_url;
         }
 
@@ -165,7 +165,7 @@
                 {% for display in result %}
                 <tr>
                     <td style="display:none">{{display.0 }}</td>
-                    <td><a href="" onclick="singleStudent({{display.1}})">{{display.1}}</a></td>
+                    <td><a href="javascript:;" onclick="singleStudent({{display.1}})">{{display.1}}</a></td>
                     <td>{{display.2}}</td>
                     <td><input type="number" name="obtained" min="0" max="{{display.4}}" value="{{display.3}}"></td>
                     <td>{{display.4}}</td>

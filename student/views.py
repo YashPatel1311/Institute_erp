@@ -42,15 +42,15 @@ def student_attendance(request):
 
 def student_marks(request):
     
+    current_user= request.user
+    current_student=Student.objects.get(uid=current_user.id)
+
     if request.method == 'POST':
         form = SemesterForm(request.POST)
         if form.is_valid():
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
             
-            current_user= request.user
-            current_student=Student.objects.get(uid=current_user.id)
-
             cursor=connection.cursor()   
             cursor.execute("call view_students_marks(%s,%s,%s);",[current_student.studentid,year,sem])
             result=cursor.fetchall()
@@ -100,7 +100,7 @@ def student_timetable(request):
             sem=form.cleaned_data['semester']
             
             cursor=connection.cursor()   
-            cursor.execute("call view_timitable_student(%s,%s,%s);",[201851084,year,sem])
+            cursor.execute("call view_timitable_student(%s,%s,%s);",[current_student.studentid,year,sem])
             result=cursor.fetchall()
 
             args={'form':form,'result':result,'current_student':current_student}

@@ -96,6 +96,7 @@ class Student(models.Model):
 
     class Meta:
         db_table="student"
+        managed =False
 
 class Faculty(models.Model):
     facultyid = models.OneToOneField(User, on_delete=models.CASCADE, db_column='facultyid', primary_key=True)
@@ -106,6 +107,7 @@ class Faculty(models.Model):
 
     class Meta:
         db_table="faculty"
+        managed =False
 
 class Branch(models.Model):
     branchid = models.CharField(primary_key=True, max_length=2)

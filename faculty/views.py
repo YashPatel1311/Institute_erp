@@ -86,18 +86,17 @@ def faculty_attendance_update(request):
     return HttpResponse("Successfully Updated!")
 
 
-def faculty_marks(request):
+def faculty_marks(request,studentid):
+
     current_user=request.user
     current_faculty=Faculty.objects.get(facultyid=current_user.id)
-
-
 
     if request.method == 'POST':
         form = FacultyAttendanceform(request.POST)
         if form.is_valid():
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
-            studentid=form.cleaned_data['studentid']
+
             temp=ClassCourse.objects.filter(facultyid=current_user.id).values('courseid').distinct()
             courseid=temp[0]['courseid']
 
@@ -105,14 +104,14 @@ def faculty_marks(request):
             cursor.execute("call view_students_marks_by_faculty(%s,%s,%s,%s);",[studentid,courseid,year,sem])
             result=cursor.fetchall()
 
-            args={'form':form,'result':result,'courseid':courseid,'studentid':studentid}
+            args={'form':form,'studentid':studentid,'current_faculty':current_faculty}
 
             return render(request,'faculty_marks.html',args)
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = FacultyAttendanceform()
-        return render(request, 'faculty_marks.html', {'form': form})
+        return render(request, 'faculty_marks.html', {'form': form,'current_faculty':current_faculty})
 
 
 def faculty_marks_update(request):

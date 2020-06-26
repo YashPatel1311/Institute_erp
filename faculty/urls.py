@@ -5,7 +5,7 @@ urlpatterns=[
     path("home/",views.faculty_home),
     path("attendance/",views.faculty_attendance),
     path("attendance_update/",views.faculty_attendance_update),
-    path("marks/",views.faculty_marks),
+    path("marks/<studentid>",views.faculty_marks),
     path("marks_update/",views.faculty_marks_update),
     path("all_marks/",views.faculty_all_marks),
     path("all_marks_update/",views.faculty_all_marks_update),
