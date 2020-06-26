@@ -2,33 +2,33 @@
 
 An ERP software for Institutes and Colleges.
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/Institute.png">
+<img src="images/Institute.png">
 
 
 ## Installation ⚙️
 
 1. Select ``` Data Import ``` & Import ```DB_Export.sql``` from My SQL workbench   
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/database.png">
+<img src="images/database.png">
 
 
 2. Select ``` Import form self contained  file ``` & click on ``` Start import ```
 
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/database2.png">
+<img src="images/database2.png">
 
 
 3. Click on administration,then User and Privileges and then Create New User
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/database3.png">
+<img src="images/database3.png">
 
 5. Use **Usrename** :  ```dba``` & **Password** : ```dba@django```
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/database4.png">
+<img src="images/database4.png">
 
 6. Assign **DBA** Role to the user
 
-<img src="https://github.com/YashPatel1311/Institute_erp/images/database5.png">
+<img src="images/database5.png">
 
 7. Clone this repository 💥
 ```bash
