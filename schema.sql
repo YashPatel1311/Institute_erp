@@ -382,8 +382,21 @@ delimiter ;
 call view_students_marks_by_faculty('201851084','CS401',2019,2);
 
 
+DROP PROCEDURE if exists `project`.`view_all_students_marks_by_faculty`;
+delimiter |
+create procedure view_all_students_marks_by_faculty(IN f_id int,IN academic_year year,IN semester tinyint)
+READS SQL DATA
+BEGIN
 
+select marksid,studentid,examtype,obtained,total from marks natural join
+(select examid,total,examtype from exam natural join
+(select classcourseid from class_course where ac_year=academic_year and sem=semester and facultyid=f_id) as t1)as t2;
+    
+END|
+delimiter ;
 
+call view_all_students_marks_by_faculty(2,2019,2);
+-- select classcourseid from class_course where ac_year=2019 and sem=2 and facultyid=2;
 
 DROP  PROCEDURE if exists `project`.`classes_by_faculty` ;
 delimiter |

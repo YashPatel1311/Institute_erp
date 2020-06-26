@@ -138,3 +138,45 @@ def faculty_marks_update(request):
 
     
     
+def faculty_all_marks(request):
+    current_user=request.user
+
+
+
+    if request.method == 'POST':
+        form = Classcourseform(request.POST)
+        if form.is_valid():
+            year=form.cleaned_data['ac_year']
+            sem=form.cleaned_data['semester']
+
+            cursor=connection.cursor()   
+            cursor.execute("call view_all_students_marks_by_faculty(%s,%s,%s);",[current_user.id,year,sem])
+            result=cursor.fetchall()
+
+            args={'form':form,'result':result}
+
+            return render(request,'faculty_all_marks.html',args)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Classcourseform()
+        return render(request, 'faculty_all_marks.html', {'form': form})
+
+
+def faculty_all_marks_update(request):
+
+    data=request.POST.get('updates')
+    python_data=json.loads(data)
+
+    print(python_data)
+    if python_data is not None:
+        print("Data received")
+
+
+        for key,value in python_data.items():
+            marks_obj=Marks.objects.get(marksid=key)            
+            marks_obj.obtained=value
+            marks_obj.save()
+
+    
+    return HttpResponse("Successfully Updated!")

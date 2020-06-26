@@ -23,25 +23,22 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
+
     <script>
-        var updates = {}
-            //var CSRF = $("input[name=csrfmiddlewaretoken]").val();
-
         const csrftoken = Cookies.get('csrftoken');
+        var arr = [];
+        $(function() {
+            getString();
+        });
 
-        function dirtybit(attendanceid, no) {
+        function getString() {
+            var total_rows = document.getElementById("result").rows.length;
 
-            var attended = document.getElementById("result").rows[no].cells[4]
-
-            if (attended.innerHTML == "present") {
-                attended.innerHTML = "absent"
-                updates[attendanceid] = 0
-            } else {
-                attended.innerHTML = "present"
-                updates[attendanceid] = 1
+            for (var i = 1; i < total_rows; i++) {
+                temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
+                arr.push(temp);
             }
-
-            console.log(updates)
+            console.log(arr);
         }
 
 
@@ -50,8 +47,22 @@
         }
 
         function sendJSON() {
+            updates = {}
+            var total_rows = document.getElementById("result").rows.length;
+
+            for (var i = 1; i < total_rows; i++) {
+                temp = document.getElementById("result").rows[i].cells[3].getElementsByTagName("input")[0].value;
+                if (temp != arr[i - 1]) {
+                    temp2 = document.getElementById("result").rows[i].cells[0].innerHTML;
+                    updates[temp2] = temp;
+                }
+            }
+            console.log(updates);
+
 
             console.log("Button Clicked");
+
+
 
             $.ajaxSetup({
                 beforeSend: function(xhr, settings) {
@@ -62,17 +73,23 @@
             });
 
             $.ajax({
-                url: "/faculty/attendance_update/",
+                url: "/faculty/marks_update/",
                 type: "POST",
                 data: {
                     'updates': JSON.stringify(updates)
                 },
                 success: function(response) {
-                    console.log("Seend successfully")
+                    console.log("Sent successfully!!")
                 }
 
             });
 
+
+        }
+
+        function singleStudent(studentid) {
+            new_url = location.protocol + "//" + location.host + "/faculty/marks/" + studentid + ">";
+            window.location.href = new_url;
         }
 
         function home() {
@@ -80,13 +97,13 @@
             window.location.href = new_url;
         }
 
-        function marks() {
-            new_url = location.protocol + "//" + location.host + "/faculty/all_marks";
+        function timetable() {
+            new_url = location.protocol + "//" + location.host + "/faculty/timetable";
             window.location.href = new_url;
         }
 
-        function timetable() {
-            new_url = location.protocol + "//" + location.host + "/faculty/timetable";
+        function attendance() {
+            new_url = location.protocol + "//" + location.host + "/faculty/attendance";
             window.location.href = new_url;
         }
 
@@ -118,9 +135,9 @@
             <nav class="navigation">
                 <ul>
                     <li><a href="javascript:;" onclick="home()">Home</a></li>
-                    <li><a href="">Attendance</a></li>
-                    <li><a href="javascript:;" onclick='marks()'>Marks</a></li>
-                    <li><a href="javascript:;" onclick='timetable()'>Time Table</a></li>
+                    <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
+                    <li><a href="">Marks</a></li>
+                    <li><a href="javascript:;" onclick="timetable()">Time Table</a></li>
                     <li><a href="javascript:;" onclick='course()'>Courses</a></li>
                 </ul>
             </nav>
@@ -134,38 +151,32 @@
 
             </form>
 
-            <h4>{{ courseid }}</h4>
             <table id="result" border="1">
 
                 <tr>
-                    <th>#</th>
-                    <th style="display:none">Attendance ID</th>
-                    <th>Date</th>
-                    <th>Day</th>
-                    <th>Attended</th>
+                    <th style="display:none">Marks ID</th>
+                    <th>Student ID</th>
+                    <th>Exam Type</th>
+                    <th>Obtained Marks</th>
+                    <th>Total Marks</th>
                 </tr>
 
 
                 {% for display in result %}
                 <tr>
-                    <td>{{display.1}}</td>
-                    <td style="display:none">{{display.0}}</td>
+                    <td style="display:none">{{display.0 }}</td>
+                    <td><a href="" onclick="singleStudent({{display.1}})">{{display.1}}</a></td>
                     <td>{{display.2}}</td>
-                    <td>{{display.3}}</td>
-                    {% if display.4 == 0 %}
-                    <td>absent</td>
-                    {% else %}
-                    <td>present</td>
-                    {% endif %}
-                    <td><button onclick=dirtybit({{display.0}},{{display.1}});>Change</button></td>
+                    <td><input type="number" name="obtained" min="0" max="{{display.4}}" value="{{display.3}}"></td>
+                    <td>{{display.4}}</td>
                 </tr>
-
                 {% endfor %}
 
             </table>
 
-
             <button type="submit" onclick="sendJSON();">Save</button>
+
+
 
         </div>
     </div>
