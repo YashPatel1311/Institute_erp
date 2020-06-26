@@ -39,7 +39,7 @@ def faculty_course(request):
         return render(request, 'faculty_course.html', {'form': form})
 
 
-def faculty_attendance(request):
+def faculty_attendance(request,studentid):
     current_user=request.user
     current_faculty=Faculty.objects.get(facultyid=current_user.id)
 
@@ -48,7 +48,6 @@ def faculty_attendance(request):
         if form.is_valid():
             year=form.cleaned_data['ac_year']
             sem=form.cleaned_data['semester']
-            studentid=form.cleaned_data['studentid']
             temp=ClassCourse.objects.filter(facultyid=current_user.id).values('courseid').distinct()
             courseid=temp[0]['courseid']
 
@@ -84,6 +83,33 @@ def faculty_attendance_update(request):
     
 
     return HttpResponse("Successfully Updated!")
+
+
+
+def faculty_all_attendance(request):
+    current_user=request.user
+    current_faculty=Faculty.objects.get(facultyid=current_user.id)
+
+    if request.method == 'POST':
+        form = Classcourseform(request.POST)
+        if form.is_valid():
+            year=form.cleaned_data['ac_year']
+            sem=form.cleaned_data['semester']
+            
+            cursor=connection.cursor()   
+            cursor.execute("call view_all_students_attendance_by_faculty(%s,%s,%s);",[current_user.id,year,sem])
+            result=cursor.fetchall()
+
+            args={'form':form,'result':result}
+
+            return render(request,'faculty_all_attendance.html',args)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Classcourseform()
+        return render(request, 'faculty_all_attendance.html', {'form': form})
+
+
 
 
 def faculty_marks(request,studentid):

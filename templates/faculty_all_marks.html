@@ -103,12 +103,17 @@
         }
 
         function attendance() {
-            new_url = location.protocol + "//" + location.host + "/faculty/attendance";
+            new_url = location.protocol + "//" + location.host + "/faculty/all_attendance";
             window.location.href = new_url;
         }
 
         function course() {
             new_url = location.protocol + "//" + location.host + "/faculty/course";
+            window.location.href = new_url;
+        }
+
+        function marks() {
+            new_url = location.protocol + "//" + location.host + "/faculty/all_marks";
             window.location.href = new_url;
         }
 
@@ -136,7 +141,7 @@
                 <ul>
                     <li><a href="javascript:;" onclick="home()">Home</a></li>
                     <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
-                    <li><a href="">Marks</a></li>
+                    <li><a href='javascript:;' onclick='marks()'>Marks</a></li>
                     <li><a href="javascript:;" onclick="timetable()">Time Table</a></li>
                     <li><a href="javascript:;" onclick='course()'>Courses</a></li>
                 </ul>

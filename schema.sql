@@ -342,6 +342,25 @@ delimiter ;
 
 
 
+DROP PROCEDURE if exists `project`.`view_all_students_attendance_by_faculty`;
+delimiter |
+create procedure view_all_students_attendance_by_faculty(IN f_id int,IN academic_year year,IN semester tinyint)
+READS SQL DATA
+BEGIN
+
+select studentid,count(distinct lectureid) as TotalLecutres,sum(attended) as AttendedLecutres from attendance natural join
+(select lectureid,timedate from lecture natural join
+(select classcourseid from class_course where facultyid=f_id and ac_year=academic_year and sem=semester)as t1)as t2
+group by studentid
+;
+END|
+delimiter ;
+
+call view_all_students_attendance_by_faculty(2,2019,2);
+
+
+
+
 DROP PROCEDURE if exists `project`.`view_students_attendance_by_faculty`;
 delimiter |
 create procedure view_students_attendance_by_faculty(IN sid char(9),IN courseid char(6),IN academic_year year,IN semester tinyint)
@@ -458,3 +477,4 @@ natural join course;
 
 end |
 delimiter ;
+
