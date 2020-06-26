@@ -1,112 +1,39 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
+<!-- CONTANT -->
+{% block contant%}
+<div class="content">
+    <div>
+        <form method="POST">
 
-<html>
+            {{ form.as_p }} {% csrf_token %}
+            <button type="submit" class="btn btn-success">Submit</button>
 
-<head>
-    <meta charset="utf-8">
-    <title>IIIT</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <metahttp-equiv='cache-control' content='no-cache'>
-        <metahttp-equiv='expires' content='0'>
-            <metahttp-equiv='pragma' content='no-cache'>
-
-                <link rel="stylesheet" type="text/css" href="{% static 'student_style.css'%}">
-
-</head>
-
-<body class="container">
-
-    <script>
-        function home() {
-            new_url = location.protocol + "//" + location.host + "/student/home";
-            window.location.href = new_url;
-        }
-
-        function marks() {
-            new_url = location.protocol + "//" + location.host + "/student/marks";
-            window.location.href = new_url;
-        }
-
-        function attendance() {
-            new_url = location.protocol + "//" + location.host + "/student/attendance";
-            window.location.href = new_url;
-        }
-
-        function course() {
-            new_url = location.protocol + "//" + location.host + "/student/course";
-            window.location.href = new_url;
-        }
-
-        function logout() {
-            new_url = location.protocol + "//" + location.host + "/logout";
-            window.location.href = new_url;
-        }
-    </script>
-
-    <header class="main-header">
-        <a href="/" class="institute-logo">
-            <img src="{% static 'IIIT_Logo.jpg'%}" class="IIIT-img">
-            <div class="institute-name">IIIT</div>
-        </a>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="Yash">Yash</a></li>
-                <li><a href="javascript:;" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="main-pg">
-        <div class="nav-div">
-            <nav class="navigation">
-                <ul>
-                    <li><a href="javascript:;" onclick="home()">Home</a></li>
-                    <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
-                    <li><a href="javascript:;" onclick='marks()'>Marks</a></li>
-                    <li><a href="">Time Table</a></li>
-                    <li><a href="javascript:;" onclick='course()'>Courses</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="content">
-
-            <form method="POST">
-
-                {{ form.as_p }} {% csrf_token %}
-                <button type="submit">Submit</button>
-
-            </form>
-
-            <table border="1">
-
-                <tr>
-                    <th>Course id</th>
-                    <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-
-
-                {% for display in result %}
-                <tr>
-                    <td>{{display.0}}</td>
-                    <td>{{display.1}}</td>
-                    <td>{{display.2}}</td>
-                    <td>{{display.3}}</td>
-                </tr>
-                {% endfor %}
-
-
-            </table>
-
-
-
-
-
-        </div>
+        </form>
     </div>
-</body>
+    <hr>
+    <table class="table table-dark">
+        <thead>
+            <tr class="bg-primary">
+                <th scope="col">Course id</th>
+                <th scope="col">Day</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+            </tr>
+        </thead>
 
-</html>
+
+        <tbody>
+            {% for display in result %}
+            <tr scope="row">
+                <td>{{display.0}}</td>
+                <td>{{display.1}}</td>
+                <td>{{display.2}}</td>
+                <td>{{display.3}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
