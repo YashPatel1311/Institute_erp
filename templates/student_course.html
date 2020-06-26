@@ -1,110 +1,36 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
+<!-- CONTANT -->
+{% block contant%}
+<div class="content">
 
-<html>
+    <form method="POST">
 
-<head>
-    <meta charset="utf-8">
-    <title>IIIT</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{ form.as_p }} {% csrf_token %}
+        <button type="submit">Submit</button>
 
-    <metahttp-equiv='cache-control' content='no-cache'>
-        <metahttp-equiv='expires' content='0'>
-            <metahttp-equiv='pragma' content='no-cache'>
+    </form>
 
-                <link rel="stylesheet" type="text/css" href="{% static 'student_style.css'%}">
+    <table border="1">
 
-</head>
-
-<body class="container">
-
-    <script>
-        function home() {
-            new_url = location.protocol + "//" + location.host + "/student/home";
-            window.location.href = new_url;
-        }
-
-        function marks() {
-            new_url = location.protocol + "//" + location.host + "/student/marks";
-            window.location.href = new_url;
-        }
-
-        function timetable() {
-            new_url = location.protocol + "//" + location.host + "/student/timetable";
-            window.location.href = new_url;
-        }
-
-        function attendance() {
-            new_url = location.protocol + "//" + location.host + "/student/attendance";
-            window.location.href = new_url;
-        }
-
-        function logout() {
-            new_url = location.protocol + "//" + location.host + "/logout";
-            window.location.href = new_url;
-        }
-    </script>
-
-    <header class="main-header">
-        <a href="/" class="institute-logo">
-            <img src="{% static 'IIIT_Logo.jpg'%}" class="IIIT-img">
-            <div class="institute-name">IIIT</div>
-        </a>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="Yash">Yash</a></li>
-                <li><a href="javascript:;" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="main-pg">
-        <div class="nav-div">
-            <nav class="navigation">
-                <ul>
-                    <li><a href="javascript:;" onclick="home()">Home</a></li>
-                    <li><a href='javascript:;' onclick='attendance()'>Attendance</a></li>
-                    <li><a href="javascript:;" onclick='marks()'>Marks</a></li>
-                    <li><a href="javascript:;" onclick='timetable()'>Time Table</a></li>
-                    <li><a href="">Courses</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="content">
-
-            <form method="POST">
-
-                {{ form.as_p }} {% csrf_token %}
-                <button type="submit">Submit</button>
-
-            </form>
-
-            <table border="1">
-
-                <tr>
-                    <th>Course id</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                </tr>
+        <tr>
+            <th>Course id</th>
+            <th>Course Name</th>
+            <th>Credit</th>
+        </tr>
 
 
-                {% for display in result %}
-                <tr>
-                    <td>{{display.0}}</td>
-                    <td>{{display.1}}</td>
-                    <td>{{display.2}}</td>
-                </tr>
-                {% endfor %}
+        {% for display in result %}
+        <tr>
+            <td>{{display.0}}</td>
+            <td>{{display.1}}</td>
+            <td>{{display.2}}</td>
+        </tr>
+        {% endfor %}
 
 
-            </table>
+    </table>
 
+</div>
 
-
-
-
-        </div>
-    </div>
-</body>
-
-</html>
+{% endblock %}
