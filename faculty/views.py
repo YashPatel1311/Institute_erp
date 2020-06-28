@@ -8,6 +8,11 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+studentid= ""
+year= 0
+sem= 0
+attendance_visited=0
+
 @login_required
 def faculty_home(request):
 
@@ -56,46 +61,49 @@ def faculty_course(request):
 
 
 @login_required
-def faculty_attendance(request, studentid):
+def faculty_attendance(request):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
 
+    global studentid,year,sem,attendance_visited
+
     if request.method == "POST":
-        form = Classcourseform(request.POST)
-        if form.is_valid():
-            year = form.cleaned_data["ac_year"]
-            sem = form.cleaned_data["semester"]
-            temp = (
-                ClassCourse.objects.filter(facultyid=current_user.id)
-                .values("courseid")
-                .distinct()
-            )
-            courseid = temp[0]["courseid"]
 
-            cursor = connection.cursor()
-            cursor.execute(
-                "call view_students_attendance_by_faculty(%s,%s,%s,%s);",
-                [studentid, courseid, year, sem],
-            )
-            result = cursor.fetchall()
+        attendance_visited=1
 
-            args = {
-                "form": form,
-                "result": result,
-                "courseid": courseid,
-                "current_faculty": current_faculty,
-            }
+        studentid=json.loads(request.POST['studentid'])
+        year=json.loads(request.POST['year'])
+        sem=json.loads(request.POST['semester'])
 
-            return render(request, "faculty_attendance.html", args)
-
+        return HttpResponse("Successfully Sent !")
     # if a GET (or any other method) we'll create a blank form
-    else:
-        form = Classcourseform()
-        return render(
-            request,
-            "faculty_attendance.html",
-            {"form": form, "current_faculty": current_faculty},
+    elif request.method=='GET' and attendance_visited==1:
+
+        temp = (
+            ClassCourse.objects.filter(facultyid=current_user.id)
+            .values("courseid")
+            .distinct()
         )
+        courseid = temp[0]["courseid"]
+        cursor = connection.cursor()
+        cursor.execute(
+            "call view_students_attendance_by_faculty(%s,%s,%s,%s);",
+            [studentid, courseid, year, sem],
+        )
+        result = cursor.fetchall()
+        args = {
+            "result": result,
+            "courseid": courseid,
+            'studentid':studentid,
+            "current_faculty": current_faculty,
+        }
+        attendance_visited=0
+        return render(request,"faculty_attendance.html",args)
+
+    else:
+        return redirect('/faculty/all_attendance')
+
+
 
 
 @login_required

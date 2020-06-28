@@ -8,13 +8,6 @@
 {% block contant%}
 <div class="content">
 
-    <form method="POST">
-
-        {{ form.as_p }} {% csrf_token %}
-        <button type="submit" class="btn btn-success">Submit</button>
-
-    </form>
-    <hr>
     <h4>{{ courseid }}</h4>
     <table id="result" class="table table-dark">
 
@@ -24,6 +17,7 @@
             <th scope="col">Date</th>
             <th scope="col">Day</th>
             <th scope="col">Attended</th>
+            <th></th>
         </tr>
 
 

@@ -48,6 +48,7 @@
 <!-- SCRIPT -->
 
 {% block script %}
+
 <script>
     const csrftoken = Cookies.get('csrftoken');
     var arr = [];
@@ -107,8 +108,11 @@
             }
 
         });
+    }
 
-
+    function singleStudent(studentid) {
+        new_url = location.protocol + "//" + location.host + "/faculty/marks/" + studentid;
+        window.location.href = new_url;
     }
 </script>
 {% endblock %}
