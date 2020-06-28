@@ -318,5 +318,3 @@ insert into exam values (null,1,"insem1",'2020-11-05',20),
 						(null,1,"insem2",'2020-11-06',20),
 						(null,2,"insem1",'2020-12-05',20),
 						(null,2,"insem2",'2020-11-06',20);
-                        
-call view_student_courses('201851084',2019,2);

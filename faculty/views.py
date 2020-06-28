@@ -3,7 +3,6 @@ from accounts.models import Faculty, ClassCourse, Attendance, Marks
 from .forms import Classcourseform
 from django.http import HttpResponseRedirect
 from django.db import connection
-from django.views.decorators.csrf import csrf_exempt
 import json
 
 # Create your views here.
@@ -16,9 +15,6 @@ def faculty_home(request):
 
     # return render(request,"student_home.html")
     return render(request, "faculty_home.html", {"current_faculty": current_faculty})
-
-
-# def faculty_attendance(request):
 
 
 def faculty_course(request):
@@ -99,7 +95,6 @@ def faculty_attendance(request, studentid):
         )
 
 
-# @csrf_exempt
 def faculty_attendance_update(request):
 
     data = request.POST["updates"]
@@ -264,27 +259,12 @@ def faculty_timetable(request):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
 
-    if request.method == "POST":
-        form = Classcourseform(request.POST)
-        if form.is_valid():
-            year = form.cleaned_data["ac_year"]
-            sem = form.cleaned_data["semester"]
+    cursor = connection.cursor()
+    cursor.execute(
+        "call view_timetable_faculty(%s);", [current_user.id]
+    )
+    result = cursor.fetchall()
 
-            cursor = connection.cursor()
-            cursor.execute(
-                "call view_timetable_faculty(%s,%s,%s);", [current_user.id, year, sem]
-            )
-            result = cursor.fetchall()
+    args = { "result": result, "current_faculty": current_faculty}
 
-            args = {"form": form, "result": result, "current_faculty": current_faculty}
-
-            return render(request, "faculty_timetable.html", args)
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = Classcourseform()
-        return render(
-            request,
-            "faculty_timetable.html",
-            {"form": form, "current_faculty": current_faculty},
-        )
+    return render(request, "faculty_timetable.html", args)

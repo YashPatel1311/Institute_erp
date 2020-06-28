@@ -123,28 +123,16 @@ def student_timetable(request):
     current_user = request.user
     current_student = Student.objects.get(uid=current_user.id)
 
-    if request.method == "POST":
-        form = SemesterForm(request.POST)
-        if form.is_valid():
-            year = form.cleaned_data["ac_year"]
-            sem = form.cleaned_data["semester"]
 
-            cursor = connection.cursor()
-            cursor.execute(
-                "call view_timitable_student(%s,%s,%s);", [current_student.studentid, year, sem]
-            )
-            result = cursor.fetchall()
+    cursor = connection.cursor()
+    cursor.execute(
+        "call view_timetable_student(%s);", [current_student.studentid]
+    )
+    result = cursor.fetchall()
 
-            args = {"form": form, "result": result, "current_student": current_student}
+    args = {"result": result, "current_student": current_student}
 
-            return render(request, "student_timetable.html", args)
+    return render(request, "student_timetable.html", args)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = SemesterForm()
-        return render(
-            request,
-            "student_timetable.html",
-            {"form": form, "current_student": current_student},
-        )
+
 
