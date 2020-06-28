@@ -4,10 +4,11 @@ from .forms import Classcourseform
 from django.http import HttpResponseRedirect
 from django.db import connection
 import json
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
+@login_required
 def faculty_home(request):
 
     current_user = request.user
@@ -17,6 +18,7 @@ def faculty_home(request):
     return render(request, "faculty_home.html", {"current_faculty": current_faculty})
 
 
+@login_required
 def faculty_course(request):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
@@ -53,6 +55,7 @@ def faculty_course(request):
         )
 
 
+@login_required
 def faculty_attendance(request, studentid):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
@@ -95,6 +98,7 @@ def faculty_attendance(request, studentid):
         )
 
 
+@login_required
 def faculty_attendance_update(request):
 
     data = request.POST["updates"]
@@ -112,6 +116,7 @@ def faculty_attendance_update(request):
     return HttpResponse("Successfully Updated!")
 
 
+@login_required
 def faculty_all_attendance(request):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
@@ -129,7 +134,7 @@ def faculty_all_attendance(request):
             )
             result = cursor.fetchall()
 
-            args = {"form": form, "result": result, "current_faculty": current_faculty}
+            args = {"form": form, "result": result, "current_faculty": current_faculty,'ac_year':year,'semester':sem}
 
             return render(request, "faculty_all_attendance.html", args)
 
@@ -137,12 +142,10 @@ def faculty_all_attendance(request):
     else:
         form = Classcourseform()
         return render(
-            request,
-            "faculty_all_attendance.html",
-            {"form": form, "current_faculty": current_faculty},
-        )
+            request,"faculty_all_attendance.html",{"form": form, "current_faculty": current_faculty})
 
 
+@login_required
 def faculty_marks(request, studentid):
 
     current_user = request.user
@@ -189,6 +192,7 @@ def faculty_marks(request, studentid):
         )
 
 
+@login_required
 def faculty_marks_update(request):
 
     data = request.POST.get("updates")
@@ -206,6 +210,7 @@ def faculty_marks_update(request):
     return HttpResponse("Successfully Updated!")
 
 
+@login_required
 def faculty_all_marks(request):
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
@@ -237,6 +242,7 @@ def faculty_all_marks(request):
         )
 
 
+@login_required
 def faculty_all_marks_update(request):
 
     data = request.POST.get("updates")
@@ -254,6 +260,7 @@ def faculty_all_marks_update(request):
     return HttpResponse("Successfully Updated!")
 
 
+@login_required
 def faculty_timetable(request):
 
     current_user = request.user

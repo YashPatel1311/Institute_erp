@@ -4,9 +4,10 @@ from accounts.models import Student
 from .forms import SemesterForm
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
+@login_required
 def student_home(request):
 
     current_user = request.user
@@ -15,7 +16,7 @@ def student_home(request):
     # return render(request,"student_home.html")
     return render(request, "student_home.html", {"current_student": current_student})
 
-
+@login_required
 def student_attendance(request):
 
     current_user = request.user
@@ -50,7 +51,7 @@ def student_attendance(request):
             {"form": form, "current_student": current_student},
         )
 
-
+@login_required
 def student_marks(request):
 
     current_user = request.user
@@ -85,7 +86,7 @@ def student_marks(request):
             {"form": form, "current_student": current_student},
         )
 
-
+@login_required
 def student_course(request):
 
     current_user = request.user
@@ -117,7 +118,7 @@ def student_course(request):
             {"form": form, "current_student": current_student},
         )
 
-
+@login_required
 def student_timetable(request):
 
     current_user = request.user
@@ -133,6 +134,3 @@ def student_timetable(request):
     args = {"result": result, "current_student": current_student}
 
     return render(request, "student_timetable.html", args)
-
-
-

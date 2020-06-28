@@ -134,3 +134,5 @@ STATIC_ROOT=os.path.join(BASE_DIR,'assets')
 
 AUTHENTICATE_BACKENDS=[ 'django.contrib.auth.backends.ModelBackend','accounts.backends.EmailBackends'
 ]
+
+LOGIN_URL='/'
