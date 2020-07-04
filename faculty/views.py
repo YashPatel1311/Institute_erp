@@ -12,6 +12,7 @@ studentid= ""
 year= 0
 sem= 0
 attendance_visited=0
+marks_visited=0
 
 @login_required
 def faculty_home(request):
@@ -67,7 +68,7 @@ def faculty_attendance(request):
 
     global studentid,year,sem,attendance_visited
 
-    if request.method == "POST":
+    if request.method == "POST" and attendance_visited==0:
 
         attendance_visited=1
 
@@ -79,21 +80,14 @@ def faculty_attendance(request):
     # if a GET (or any other method) we'll create a blank form
     elif request.method=='GET' and attendance_visited==1:
 
-        temp = (
-            ClassCourse.objects.filter(facultyid=current_user.id)
-            .values("courseid")
-            .distinct()
-        )
-        courseid = temp[0]["courseid"]
         cursor = connection.cursor()
         cursor.execute(
             "call view_students_attendance_by_faculty(%s,%s,%s,%s);",
-            [studentid, courseid, year, sem],
+            [studentid, current_user.id, year, sem],
         )
         result = cursor.fetchall()
         args = {
             "result": result,
-            "courseid": courseid,
             'studentid':studentid,
             "current_faculty": current_faculty,
         }
@@ -154,35 +148,31 @@ def faculty_all_attendance(request):
 
 
 @login_required
-def faculty_marks(request, studentid):
+def faculty_marks(request):
 
     current_user = request.user
     current_faculty = Faculty.objects.get(facultyid=current_user.id)
 
-    print(studentid)
+    global studentid,year,sem,marks_visited
 
-    if request.method == "POST":
-        form = Classcourseform(request.POST)
-        if form.is_valid():
-            year = form.cleaned_data["ac_year"]
-            sem = form.cleaned_data["semester"]
+    if request.method == "POST" and marks_visited==0:
+        marks_visited=1
 
-            temp = (
-                ClassCourse.objects.filter(facultyid=current_user.id)
-                .values("courseid")
-                .distinct()
-            )
-            courseid = temp[0]["courseid"]
+        studentid=json.loads(request.POST['studentid'])
+        year=json.loads(request.POST['year'])
+        sem=json.loads(request.POST['semester'])
 
+        return HttpResponse("Successfully Sent !")
+
+    elif request.method=="GET" and marks_visited==1:
             cursor = connection.cursor()
             cursor.execute(
                 "call view_students_marks_by_faculty(%s,%s,%s,%s);",
-                [studentid, courseid, year, sem],
+                [studentid, current_user.id, year, sem],
             )
             result = cursor.fetchall()
 
             args = {
-                "form": form,
                 "studentid": studentid,
                 "current_faculty": current_faculty,
                 "result": result,
@@ -190,14 +180,8 @@ def faculty_marks(request, studentid):
 
             return render(request, "faculty_marks.html", args)
 
-    # if a GET (or any other method) we'll create a blank form
     else:
-        form = Classcourseform()
-        return render(
-            request,
-            "faculty_marks.html",
-            {"form": form, "current_faculty": current_faculty},
-        )
+        return redirect('/faculty/all_marks')
 
 
 @login_required
@@ -236,7 +220,7 @@ def faculty_all_marks(request):
             )
             result = cursor.fetchall()
 
-            args = {"form": form, "result": result, "current_faculty": current_faculty}
+            args = {"form": form, "result": result, "current_faculty": current_faculty,"year":year,"sem":sem}
 
             return render(request, "faculty_all_marks.html", args)
 

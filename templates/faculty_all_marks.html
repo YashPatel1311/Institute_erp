@@ -29,7 +29,7 @@
         {% for display in result %}
         <tr scope="row">
             <td style="display:none">{{display.0 }}</td>
-            <td><a href="javascript:;" onclick="singleStudent({{display.1}})">{{display.1}}</a></td>
+            <td><a href="javascript:;" onclick="singleStudent({{display.1}},{{year}},{{sem}})">{{display.1}}</a></td>
             <td>{{display.2}}</td>
             <td><input type="number" name="obtained" min="0" max="{{display.4}}" value="{{display.3}}"></td>
             <td>{{display.4}}</td>
@@ -38,7 +38,7 @@
 
     </table>
     <hr>
-    <button type="submit" onclick="sendJSON();" class="btn btn-success">Save</button>
+    <button type="submit" onclick="UpdateMarks();" class="btn btn-success">Save</button>
 
 
 
@@ -53,10 +53,10 @@
     const csrftoken = Cookies.get('csrftoken');
     var arr = [];
     $(function() {
-        getString();
+        getInitMarks();
     });
 
-    function getString() {
+    function getInitMarks() {
         var total_rows = document.getElementById("result").rows.length;
 
         for (var i = 1; i < total_rows; i++) {
@@ -71,7 +71,28 @@
         return ['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method);
     }
 
-    function sendJSON() {
+    function sendJSON(data, url, csrftoken) {
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(response) {
+                console.log("Sent successfully!!")
+            }
+
+        });
+    }
+
+    function UpdateMarks() {
         updates = {}
         var total_rows = document.getElementById("result").rows.length;
 
@@ -83,35 +104,22 @@
             }
         }
         console.log(updates);
-
-
         console.log("Button Clicked");
-
-
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-
-        $.ajax({
-            url: "/faculty/marks_update/",
-            type: "POST",
-            data: {
-                'updates': JSON.stringify(updates)
-            },
-            success: function(response) {
-                console.log("Sent successfully!!")
-            }
-
-        });
     }
 
-    function singleStudent(studentid) {
-        new_url = location.protocol + "//" + location.host + "/faculty/marks/" + studentid;
+    url = "/faculty/marks_update/";
+
+    sendJSON(JSON.stringify(updates), url, csrftoken);
+
+    function singleStudent(studentid, ac_year, semester) {
+        new_url = location.protocol + "//" + location.host + "/faculty/marks/";
+        data = {
+            'studentid': JSON.stringify(studentid),
+            'year': JSON.stringify(ac_year),
+            'semester': JSON.stringify(semester)
+        }
+        sendJSON(data, new_url, csrftoken);
+
         window.location.href = new_url;
     }
 </script>

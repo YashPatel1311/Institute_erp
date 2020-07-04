@@ -62,22 +62,16 @@ call view_all_students_attendance_by_faculty(2,2019,2);
 
 DROP PROCEDURE if exists `project`.`view_students_attendance_by_faculty`;
 delimiter |
-create procedure view_students_attendance_by_faculty(IN sid char(9),IN courseid char(6),IN academic_year year,IN semester tinyint)
+create procedure view_students_attendance_by_faculty(IN sid char(9),IN f_id INT,IN academic_year year,IN semester tinyint)
 READS SQL DATA
 BEGIN
 
 SET @count:=0;
-select attendanceid,(@count:=@count+1) as '#',date(timedate) as 'date',dayname(timedate) as 'day',attended from attendance natural join(
-select lectureid,studentid,timedate from lecture natural join
-(select classcourseid,studentid from
-(select * from student_classcourse where studentid=sid) as t1
-natural join
-(select * from class_course where courseid=courseid and ac_year=academic_year and sem=semester) as t2)as t3) as t4;    
-    
+select attendanceid,(@count:=@count+1) as '#',date(timedate) as 'date',dayname(timedate) as 'day',attended from attendance natural join
+(select * from lecture natural join 
+(select * from class_course natural join student_classcourse where facultyid=f_id and sem=semester and ac_year=academic_year and studentid=sid)as t1)as t2;    
 END|
 delimiter ;
-
-
 
 
 DROP PROCEDURE if exists `project`.`view_students_marks_by_faculty`;
