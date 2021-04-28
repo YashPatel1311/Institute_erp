@@ -66,12 +66,12 @@ python manage.py runserver
 
 <img src="images/LoginPage.png">
 
-### Faculty Module ###
-   **FacultyHome Page :**
-  <img src="images/FacultyHome.png">
-  
-  **FacultyAllAttendance Page :**
-  <img src="images/FacultyAllAttendance.png">
+>### Faculty Module ###
+>>   **FacultyHome Page :**
+>>  <img src="images/FacultyHome.png">
+>  
+>>  **FacultyAllAttendance Page :**
+>>  <img src="images/FacultyAllAttendance.png">
   
 ### Student Module ###
   **StudentHome Page :**
