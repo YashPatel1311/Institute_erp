@@ -73,18 +73,18 @@ python manage.py runserver
 >>  **FacultyAllAttendance Page :**
 >>  <img src="images/FacultyAllAttendance.png">
   
-### Student Module ###
-  **StudentHome Page :**
-  <img src="images/StudentHome.png">
-  
-  **StudentAttendance Page :**
-  <img src="images/StudentAttendance.png">
-  
-  **StudentCourses Page :**
-  <img src="images/StudentCourses.png">
-  
-  **StudentMarks Page :**
-  <img src="images/StudentMarks.png">
+>### Student Module ###
+>>  **StudentHome Page :**
+>>  <img src="images/StudentHome.png">
+>  
+>>  **StudentAttendance Page :**
+>>  <img src="images/StudentAttendance.png">
+>  
+>>  **StudentCourses Page :**
+>>  <img src="images/StudentCourses.png">
+>  
+>>  **StudentMarks Page :**
+>>  <img src="images/StudentMarks.png">
 
 
 
