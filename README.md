@@ -62,9 +62,11 @@ python manage.py runserver
 ```
 
 ## Screenshots 🖼️
-**LogIn Page :**
+>**LogIn Page :**
+>
+><img src="images/LoginPage.png">
 
-<img src="images/LoginPage.png">
+***
 
 >### Faculty Module ###
 >>   **FacultyHome Page :**
@@ -72,7 +74,9 @@ python manage.py runserver
 >  
 >>  **FacultyAllAttendance Page :**
 >>  <img src="images/FacultyAllAttendance.png">
-  
+
+***
+
 >### Student Module ###
 >>  **StudentHome Page :**
 >>  <img src="images/StudentHome.png">
@@ -86,7 +90,7 @@ python manage.py runserver
 >>  **StudentMarks Page :**
 >>  <img src="images/StudentMarks.png">
 
-
+***
 
 
 ## Contributers 👨‍💻
